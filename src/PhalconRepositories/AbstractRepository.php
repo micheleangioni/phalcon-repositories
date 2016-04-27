@@ -356,7 +356,7 @@ class AbstractRepository
      */
     public function update(array $inputs)
     {
-        // TODO
+        return $this->model->save($inputs);
     }
 
     /**
@@ -415,7 +415,10 @@ class AbstractRepository
      */
     public function updateOrCreateBy(array $where, array $inputs = [])
     {
+        /*
         $inputs = $this->purifyInputs($inputs);
+
+        // TODO Add the $where condition!!
 
         $model = clone $this->model;
         $model->assign($inputs);
@@ -432,6 +435,7 @@ class AbstractRepository
         }
 
         return $model;
+        */
     }
 
     /**
