@@ -1,0 +1,28 @@
+{
+    "name": "michele-angioni/phalcon-repositories",
+    "description": "A library which simplifies the use of the Repository pattern in Phalcon.",
+    "keywords": ["phalcon", "repo", "repositories"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michele Angioni",
+            "email": "michele.angioni@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5",
+        "ext-phalcon": ">=2.0.0"
+    },
+    "require-dev": {
+        "league/factory-muffin": "^3.0",
+        "league/factory-muffin-faker": "^1.0",
+        "phalcon/incubator": "dev-master",
+        "phpunit/phpunit": "^4.8"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MicheleAngioni\\PhalconRepositories\\": "src/PhalconRepositories"
+        }
+    },
+    "minimum-stability": "dev"
+}
