@@ -19,7 +19,7 @@
         "phalcon/incubator": "dev-master",
         "phpunit/phpunit": "^4.8"
     },
-    "autoload-dev": {
+    "autoload": {
         "psr-4": {
             "MicheleAngioni\\PhalconRepositories\\": "src/PhalconRepositories"
         }
