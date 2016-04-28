@@ -118,10 +118,10 @@ The security of the other parameters ($whereInKey, $whereIn = [], $orderBy, $ord
 
 ## Contribution guidelines
 
-Support follows PSR-1, PSR-2 and PSR-4 PHP coding standards, and semantic versioning.
+Phalcon Repositories follows PSR-1, PSR-2 and PSR-4 PHP coding standards, and semantic versioning.
 
 Pull requests are welcome.
 
 ## License
 
-Support is free software distributed under the terms of the MIT license.
+Phalcon Repositories is free software distributed under the terms of the MIT license.
