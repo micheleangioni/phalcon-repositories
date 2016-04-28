@@ -96,7 +96,6 @@ The `EloquentRepository` empowers automatically our repositories of the followin
 - getNotIn($whereNotInKey, array $whereNotIn = [], $with = [], $orderBy = NULL, $order = 'desc', $limit = 0)
 - getByPage($page = 1, $limit = 10, array $where = [], $with = [], $orderBy = NULL, $order = 'desc')
 - create(array $inputs = [])
-- update(array $inputs)
 - updateById($id, array $inputs)
 - destroy($id)
 - destroyFirstBy(array $where)

@@ -356,7 +356,11 @@ class AbstractRepository
      */
     public function update(array $inputs)
     {
+        // TODO in PHQL or Raw SQL since the query below does NOT update only input columns but all columns
+
+        /*
         return $this->model->save($inputs);
+        */
     }
 
     /**

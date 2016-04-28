@@ -100,6 +100,14 @@ abstract class TestCase extends PhalconTestCase
                             'size' => 20,
                             'after' => 'id'
                         )
+                    ),
+                    new Column(
+                        'text',
+                        array(
+                            'type' => Column::TYPE_VARCHAR,
+                            'size' => 20,
+                            'after' => 'username'
+                        )
                     )
                 ),
                 'indexes' => array(
