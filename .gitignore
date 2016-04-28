@@ -13,4 +13,4 @@ composer.lock
 .env
 
 # Tests temp files (including sqlite database)
-/storage/temp
+/test/temp

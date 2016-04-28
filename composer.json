@@ -14,8 +14,6 @@
         "ext-phalcon": ">=2.0.0"
     },
     "require-dev": {
-        "league/factory-muffin": "^3.0",
-        "league/factory-muffin-faker": "^1.0",
         "phalcon/incubator": "dev-master",
         "phpunit/phpunit": "^4.8"
     },
