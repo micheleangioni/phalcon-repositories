@@ -1,4 +1,6 @@
-<?php namespace MicheleAngioni\PhalconRepositories;
+<?php
+
+namespace MicheleAngioni\PhalconRepositories;
 
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Criteria;
@@ -28,7 +30,8 @@ class AbstractRepository
      * Find a specific record.
      * Return false if not found.
      *
-     * @param  int|string  $id
+     * @param  int|string $id
+     *
      * @return \Phalcon\Mvc\Model|false
      */
     public function find($id)
@@ -40,7 +43,8 @@ class AbstractRepository
      * Find a specific record.
      * Throws exception if not found.
      *
-     * @param  int|string  $id
+     * @param  int|string $id
+     *
      * @throws ModelNotFoundException
      *
      * @return \Phalcon\Mvc\Model
@@ -48,7 +52,7 @@ class AbstractRepository
     public function findOrFail($id)
     {
         if (!$record = $this->model->findFirst(["id = :value:", 'bind' => ['value' => $id]])) {
-            throw new ModelNotFoundException("Caught ModelNotFoundException in ".__METHOD__.' at line '.__LINE__.': Model not found.');
+            throw new ModelNotFoundException("Caught ModelNotFoundException in " . __METHOD__ . ' at line ' . __LINE__ . ': Model not found.');
         }
 
         return $record;
@@ -75,7 +79,7 @@ class AbstractRepository
     public function firstOrFail()
     {
         if (!$record = $this->model->findFirst()) {
-            throw new ModelNotFoundException("Caught ModelNotFoundException in ".__METHOD__.' at line '.__LINE__.': No models found.');
+            throw new ModelNotFoundException("Caught ModelNotFoundException in " . __METHOD__ . ' at line ' . __LINE__ . ': No models found.');
         }
 
         return $record;
@@ -85,7 +89,8 @@ class AbstractRepository
      * Return the first record querying input parameters.
      * Return false if no record is found.
      *
-     * @param  array  $where
+     * @param  array $where
+     *
      * @return \Phalcon\Mvc\Model|false
      */
     public function firstBy(array $where = [])
@@ -101,7 +106,8 @@ class AbstractRepository
      * Return the first record querying input parameters.
      * Throws exception if no record is found.
      *
-     * @param  array  $where
+     * @param  array $where
+     *
      * @throws ModelNotFoundException
      *
      * @return \Phalcon\Mvc\Model
@@ -113,7 +119,7 @@ class AbstractRepository
         $model = $this->applyWhere($query, $where)->limit(1)->execute()->getFirst();
 
         if (!$model) {
-            throw new ModelNotFoundException("Caught ModelNotFoundException in ".__METHOD__.' at line '.__LINE__.': No model found.');
+            throw new ModelNotFoundException("Caught ModelNotFoundException in " . __METHOD__ . ' at line ' . __LINE__ . ': No model found.');
         }
 
         return $model;
@@ -122,7 +128,8 @@ class AbstractRepository
     /**
      * Return records querying input parameters.
      *
-     * @param  array  $where
+     * @param  array $where
+     *
      * @return ResultsetInterface
      */
     public function getBy(array $where = [])
@@ -137,7 +144,7 @@ class AbstractRepository
     /**
      * Return the first $limit records querying input parameters.
      *
-     * @param int  $limit
+     * @param int $limit
      * @param array $where
      *
      * @return ResultsetInterface
@@ -155,10 +162,10 @@ class AbstractRepository
      * Return the first ordered $limit records querying input parameters.
      * $order can be 'desc' or 'asc'. $limit = 0 means no limits.
      *
-     * @param string  $orderBy
-     * @param array  $where
-     * @param string  $order
-     * @param int  $limit
+     * @param string $orderBy
+     * @param array $where
+     * @param string $order
+     * @param int $limit
      *
      * @return ResultsetInterface
      */
@@ -179,11 +186,11 @@ class AbstractRepository
      * Return the first ordered $limit records querying input parameters.
      * $limit = 0 means no limits.
      *
-     * @param string  $whereInKey
-     * @param array  $whereIn
-     * @param string|null  $orderBy
-     * @param string  $order
-     * @param int  $limit
+     * @param string $whereInKey
+     * @param array $whereIn
+     * @param string|null $orderBy
+     * @param string $order
+     * @param int $limit
      *
      * @return ResultsetInterface
      */
@@ -208,11 +215,11 @@ class AbstractRepository
      * Return the first ordered $limit records querying input parameters.
      * $limit = 0 means no limits.
      *
-     * @param string  $whereNotInKey
-     * @param array  $whereNotIn
-     * @param string|null  $orderBy
-     * @param string  $order
-     * @param int  $limit
+     * @param string $whereNotInKey
+     * @param array $whereNotIn
+     * @param string|null $orderBy
+     * @param string $order
+     * @param int $limit
      *
      * @return ResultsetInterface
      */
@@ -269,6 +276,7 @@ class AbstractRepository
      * @param  string $relation
      * @param  array $where
      * @param  int $hasAtLeast = 1
+     *
      * @throws ModelNotFoundException
      *
      * @return ResultsetInterface
@@ -295,11 +303,11 @@ class AbstractRepository
     /**
      * Get ordered results by Page.
      *
-     * @param  int  $page
-     * @param  int  $limit
-     * @param  array  $where
-     * @param  string|null  $orderBy
-     * @param  string  $order
+     * @param  int $page
+     * @param  int $limit
+     * @param  array $where
+     * @param  string|null $orderBy
+     * @param  string $order
      *
      * @return ResultsetInterface
      */
@@ -324,7 +332,8 @@ class AbstractRepository
     /**
      * Create a new record.
      *
-     * @param  array  $inputs
+     * @param  array $inputs
+     *
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      *
@@ -337,12 +346,12 @@ class AbstractRepository
         try {
             $result = $model->create($inputs);
         } catch (\Exception $e) {
-            throw new \RuntimeException("Caught RuntimeException in ".__METHOD__.' at line '.__LINE__.': ' .$e->getMessage());
+            throw new \RuntimeException("Caught RuntimeException in " . __METHOD__ . ' at line ' . __LINE__ . ': ' . $e->getMessage());
         }
 
-        if(!$result) {
+        if (!$result) {
             $errorMessages = implode('. ', $model->getMessages());
-            throw new \UnexpectedValueException("Caught UnexpectedValueException in ".__METHOD__.' at line '.__LINE__.': Model cannot be saved. Error messages: ' . $errorMessages);
+            throw new \UnexpectedValueException("Caught UnexpectedValueException in " . __METHOD__ . ' at line ' . __LINE__ . ': Model cannot be saved. Error messages: ' . $errorMessages);
         }
 
         return $model;
@@ -352,6 +361,7 @@ class AbstractRepository
      * Update all records.
      *
      * @param array $inputs
+     *
      * @return mixed
      */
     public function update(array $inputs)
@@ -366,8 +376,9 @@ class AbstractRepository
     /**
      * Update an existing record, retrieved by id.
      *
-     * @param  int  $id
-     * @param  array  $inputs
+     * @param  int $id
+     * @param  array $inputs
+     *
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      *
@@ -382,12 +393,12 @@ class AbstractRepository
         try {
             $result = $model->update($inputs);
         } catch (\Exception $e) {
-            throw new \RuntimeException("Caught RuntimeException in ".__METHOD__.' at line '.__LINE__.': ' .$e->getMessage());
+            throw new \RuntimeException("Caught RuntimeException in " . __METHOD__ . ' at line ' . __LINE__ . ': ' . $e->getMessage());
         }
 
-        if(!$result) {
+        if (!$result) {
             $errorMessages = implode('. ', $model->getMessages());
-            throw new \UnexpectedValueException("Caught UnexpectedValueException in ".__METHOD__.' at line '.__LINE__.': Model cannot be updated. Error messages: ' . $errorMessages);
+            throw new \UnexpectedValueException("Caught UnexpectedValueException in " . __METHOD__ . ' at line ' . __LINE__ . ': Model cannot be updated. Error messages: ' . $errorMessages);
         }
 
         return $model;
@@ -412,6 +423,7 @@ class AbstractRepository
      *
      * @param array $where
      * @param array $inputs
+     *
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      *
@@ -445,7 +457,8 @@ class AbstractRepository
     /**
      * Delete input record.
      *
-     * @param  int  $id
+     * @param  int $id
+     *
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      *
@@ -458,12 +471,12 @@ class AbstractRepository
         try {
             $result = $model->delete();
         } catch (\Exception $e) {
-            throw new \RuntimeException("Caught RuntimeException in ".__METHOD__.' at line '.__LINE__.': ' .$e->getMessage());
+            throw new \RuntimeException("Caught RuntimeException in " . __METHOD__ . ' at line ' . __LINE__ . ': ' . $e->getMessage());
         }
 
-        if(!$result) {
+        if (!$result) {
             $errorMessages = implode('. ', $model->getMessages());
-            throw new \UnexpectedValueException("Caught UnexpectedValueException in ".__METHOD__.' at line '.__LINE__.': Model cannot be deleted. Error messages: ' . $errorMessages);
+            throw new \UnexpectedValueException("Caught UnexpectedValueException in " . __METHOD__ . ' at line ' . __LINE__ . ': Model cannot be deleted. Error messages: ' . $errorMessages);
         }
 
         return $result;
@@ -474,6 +487,7 @@ class AbstractRepository
      * Throws exception if no record is found.
      *
      * @param array $where
+     *
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      *
@@ -486,12 +500,12 @@ class AbstractRepository
         try {
             $result = $model->delete();
         } catch (\Exception $e) {
-            throw new \RuntimeException("Caught RuntimeException in ".__METHOD__.' at line '.__LINE__.': ' .$e->getMessage());
+            throw new \RuntimeException("Caught RuntimeException in " . __METHOD__ . ' at line ' . __LINE__ . ': ' . $e->getMessage());
         }
 
-        if(!$result) {
+        if (!$result) {
             $errorMessages = implode('. ', $model->getMessages());
-            throw new \UnexpectedValueException("Caught UnexpectedValueException in ".__METHOD__.' at line '.__LINE__.': Model cannot be deleted. Error messages: ' . $errorMessages);
+            throw new \UnexpectedValueException("Caught UnexpectedValueException in " . __METHOD__ . ' at line ' . __LINE__ . ': Model cannot be deleted. Error messages: ' . $errorMessages);
         }
 
         return $result;
@@ -501,6 +515,7 @@ class AbstractRepository
      * Retrieve and delete the all records matching input parameters.
      *
      * @param array $where
+     *
      * @return mixed
      */
     public function destroyBy(array $where)
@@ -534,7 +549,8 @@ class AbstractRepository
     /**
      * Count the number of records matching input parameters.
      *
-     * @param  array  $where
+     * @param  array $where
+     *
      * @return int
      */
     public function countBy(array $where = [])
@@ -577,14 +593,14 @@ class AbstractRepository
 
         foreach ($where as $key => $value) {
             if (is_null($value)) {
-                if($counter == 1) {
+                if ($counter == 1) {
                     $query = $query->where($key . ": IS NULL");
 
                 } else {
                     $query = $query->andWhere($key . ": IS NULL");
                 }
             } else {
-                if($counter == 1) {
+                if ($counter == 1) {
                     $query = $query->where($key . " = :value" . $counter . ":");
                 } else {
                     $query = $query->andWhere($key . " = :value" . $counter . ":");

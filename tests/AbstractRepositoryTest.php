@@ -222,7 +222,7 @@ class AuthWebTest extends TestCase
 
     protected function createUsers($userRepo, $number = 3)
     {
-        for($i=1; $i <= $number; $i++) {
+        for ($i = 1; $i <= $number; $i++) {
             $userRepo->create([
                 'username' => 'User ' . $i
             ]);

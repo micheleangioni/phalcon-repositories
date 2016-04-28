@@ -111,7 +111,7 @@ The security of the other parameters ($whereInKey, $whereIn = [], $orderBy, $ord
 
 ## Contribution guidelines
 
-Support follows PSR-1 and PSR-4 PHP coding standards, and semantic versioning.
+Support follows PSR-1, PSR-2 and PSR-4 PHP coding standards, and semantic versioning.
 
 Pull requests are welcome.
 

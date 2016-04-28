@@ -30,7 +30,7 @@ abstract class TestCase extends PhalconTestCase
         // Load any additional services that might be required during testing
         $di = Di::getDefault();
 
-        $di->set('modelsManager', function() {
+        $di->set('modelsManager', function () {
             return new \Phalcon\Mvc\Model\Manager();
         });
 
@@ -47,6 +47,7 @@ abstract class TestCase extends PhalconTestCase
         $di->set('session', function () {
             $session = new \Phalcon\Session\Adapter\Files();
             $session->start();
+
             return $session;
         });
 
@@ -79,48 +80,48 @@ abstract class TestCase extends PhalconTestCase
         $connection->createTable(
             'users',
             null,
-            array(
-                'columns' => array(
+            [
+                'columns' => [
                     new Column(
                         'id',
-                        array(
+                        [
                             'type' => Column::TYPE_INTEGER,
                             'unsigned' => true,
                             'notNull' => true,
                             'autoIncrement' => true,
                             'size' => 10,
                             'first' => true
-                        )
+                        ]
                     ),
                     new Column(
                         'username',
-                        array(
+                        [
                             'type' => Column::TYPE_VARCHAR,
                             'notNull' => true,
                             'size' => 20,
                             'after' => 'id'
-                        )
+                        ]
                     ),
                     new Column(
                         'text',
-                        array(
+                        [
                             'type' => Column::TYPE_VARCHAR,
                             'size' => 20,
                             'after' => 'username'
-                        )
+                        ]
                     )
-                ),
-                'indexes' => array(
-                    new Index('PRIMARY', array('id'), 'PRIMARY'),
-                    new Index('username_UNIQUE', array('username'), 'UNIQUE')
-                ),
-                'options' => array(
+                ],
+                'indexes' => [
+                    new Index('PRIMARY', ['id'], 'PRIMARY'),
+                    new Index('username_UNIQUE', ['username'], 'UNIQUE')
+                ],
+                'options' => [
                     'TABLE_TYPE' => 'BASE TABLE',
                     'AUTO_INCREMENT' => '18',
                     'ENGINE' => 'InnoDB',
                     'TABLE_COLLATION' => 'utf8_general_ci'
-                )
-            )
+                ]
+            ]
         );
     }
 

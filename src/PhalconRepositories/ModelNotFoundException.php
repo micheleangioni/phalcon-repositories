@@ -1,4 +1,6 @@
-<?php namespace MicheleAngioni\PhalconRepositories;
+<?php
+
+namespace MicheleAngioni\PhalconRepositories;
 
 use Phalcon\Exception;
 
