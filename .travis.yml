@@ -5,6 +5,9 @@ php:
   - 5.6
 
 before_script:
+  - git clone git://github.com/phalcon/cphalcon.git $TRAVIS_BUILD_DIR/vendor/cphalcon
+  - cd $TRAVIS_BUILD_DIR/vendor/cphalcon/build && ./install && cd $TRAVIS_BUILD_DIR
+  - echo 'extension=phalcon.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - travis_retry composer self-update
   - travis_retry composer install --prefer-source --no-interaction --dev
 
