@@ -3,7 +3,7 @@
 [![License](https://poser.pugx.org/michele-angioni/phalcon-repositories/license)](https://packagist.org/packages/michele-angioni/phalcon-repositories)
 [![Latest Stable Version](https://poser.pugx.org/michele-angioni/phalcon-repositories/v/stable)](https://packagist.org/packages/michele-angioni/phalcon-repositories)
 [![Latest Unstable Version](https://poser.pugx.org/michele-angioni/phalcon-repositories/v/unstable)](https://packagist.org/packages/michele-angioni/phalcon-repositories)
-[![Build Status](https://travis-ci.org/micheleangioni/phalcon-repositories.svg?branch=master)
+[![Build Status](https://travis-ci.org/micheleangioni/phalcon-repositories.svg)](https://travis-ci.org/micheleangioni/phalcon-repositories)
 
 ## Introduction
 
