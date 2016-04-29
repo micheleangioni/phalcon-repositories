@@ -4,7 +4,6 @@ namespace MicheleAngioni\PhalconRepositories\Tests;
 
 class AuthWebTest extends TestCase
 {
-    protected static $fm;
 
     public function testCreate()
     {
@@ -80,12 +79,13 @@ class AuthWebTest extends TestCase
     public function testFirstOrFail()
     {
         $userNumber = 3;
+        $userId = 1;
 
         $usersRepo = new UsersRepo();
         $this->createUsers($usersRepo, $userNumber);
 
         $user = $usersRepo->FirstOrFail();
-        $this->assertEquals(1, $user->getId());
+        $this->assertEquals($userId, $user->getId());
     }
 
     public function testFirstBy()
