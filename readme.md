@@ -11,7 +11,7 @@ Phalcon Repositories lets you easily build repositories for your Phalcon 2 model
 
 ## Installation
 
-Support can be installed through Composer, just include `"michele-angioni/phalcon-repositories": "dev-master"` to your composer.json and run `composer update` or `composer install`.
+Support can be installed through Composer, just include `"michele-angioni/phalcon-repositories": "~0.1"` to your composer.json and run `composer update` or `composer install`.
 
 ## Usage
 
