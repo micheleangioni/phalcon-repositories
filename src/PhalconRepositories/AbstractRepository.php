@@ -6,7 +6,7 @@ use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Mvc\Model\ResultsetInterface;
 
-class AbstractRepository
+class AbstractRepository implements RepositoryInterface
 {
     /**
      * @var Model
