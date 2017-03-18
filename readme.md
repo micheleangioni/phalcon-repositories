@@ -7,7 +7,7 @@
 
 ## Introduction
 
-Phalcon Repositories lets you easily build repositories for your Phalcon 2 models.
+Phalcon Repositories lets you easily build repositories for your Phalcon models.
 
 ## Installation
 
@@ -22,70 +22,74 @@ As an example let's say we have a `MyApp\Models\Posts` model.
 
 The easiest way to create a Posts repository is to define a class as such
 
-    <?php namespace MyApp\Repos;
+```php
+<?php namespace MyApp\Repos;
 
-    use MicheleAngioni\PhalconRepositories\AbstractRepository;
-    use MyApp\Models\Posts;
+use MicheleAngioni\PhalconRepositories\AbstractRepository;
+use MyApp\Models\Posts;
 
-    class PostsRepository extends AbstractEloquentRepository
+class PostsRepository extends AbstractEloquentRepository
+{
+    protected $model;
+
+    public function __construct(Posts $model)
     {
-        protected $model;
-
-        public function __construct(Posts $model)
-        {
-            $this->model = $model;
-        }
+        $this->model = $model;
     }
+}
+```
 
 Suppose now we need the Post repository in our PostController. For example we can retrieve a post this way 
 
-    <?php namespace MyApp\Controllers;
+```php
+<?php namespace MyApp\Controllers;
 
-    use MyApp\Repos\PostsRepository as PostsRepo;
-    use Phalcon\Mvc\Controller;
+use MyApp\Repos\PostsRepository as PostsRepo;
+use Phalcon\Mvc\Controller;
 
-    class PostsController extends Controller 
+class PostsController extends Controller 
+{
+    
+    public function showAction($idPost)
     {
+        $postsRepo = new PostsRepo();
         
-        public function showAction($idPost)
-        {
-            $postsRepo = new PostsRepo();
-            
-            $post = $postsRepo->find($idPost);
+        $post = $postsRepo->find($idPost);
 
-            // Use the retrieved post
-        }
+        // Use the retrieved post
     }
+}
+```
     
 We could also bind out repository to the container through the Phalcon dependency injection.
 We just need to add a new `postRepo` service in our bootstrap file
 
-    [...]
-    
-    $di->set('postsRepo', function () {
-        return new MyApp\Repos\PostsRepository();
-    });
-    
-    [...]
+```php
+$di->set('postsRepo', function () {
+    return new MyApp\Repos\PostsRepository();
+});
+```
 
 and than use it in the controller
 
-    <?php namespace MyApp\Controllers;
+```php
+<?php namespace MyApp\Controllers;
+
+use Phalcon\Mvc\Controller;
+
+class PostsController extends Controller 
+{
     
-    use Phalcon\Mvc\Controller;
-
-    class PostsController extends Controller 
+    public function showAction($idPost)
     {
+        $postsRepo = $this->getDI()->getPostsRepo();
         
-        public function showAction($idPost)
-        {
-            $postsRepo = $this->getDI()->getPostsRepo();
-            
-            $post = $postsRepo->find($idPost);
+        $post = $postsRepo->find($idPost);
 
-            // Use the retrieved post
-        }
+        // Use the retrieved post
     }
+}
+```
 
 The `EloquentRepository` empowers automatically our repositories of the following public methods:
 
