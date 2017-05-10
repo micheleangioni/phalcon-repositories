@@ -96,7 +96,6 @@ class AbstractRepository implements RepositoryInterface
     public function firstBy(array $where = [])
     {
         $query = $this->model->query();
-
         $model = $this->applyWhere($query, $where)->limit(1)->execute()->getFirst();
 
         return $model;
@@ -115,7 +114,6 @@ class AbstractRepository implements RepositoryInterface
     public function firstOrFailBy(array $where = [])
     {
         $query = $this->model->query();
-
         $model = $this->applyWhere($query, $where)->limit(1)->execute()->getFirst();
 
         if (!$model) {
@@ -197,7 +195,6 @@ class AbstractRepository implements RepositoryInterface
     public function getIn($whereInKey, array $whereIn = [], $orderBy = null, $order = 'desc', $limit = 0)
     {
         $query = $this->model->query();
-
         $query->inWhere($whereInKey, $whereIn);
 
         if ($orderBy) {
@@ -235,6 +232,43 @@ class AbstractRepository implements RepositoryInterface
 
         if ($limit) {
             $query->limit($limit);
+        }
+
+        return $query->execute();
+    }
+
+    /**
+     * Return the first ordered $limit records querying input parameters.
+     * $limit = 0 means no limits.
+     *
+     * @param int $page
+     * @param int $limit
+     * @param string $whereInKey
+     * @param array $whereIn
+     * @param array $where
+     * @param string|null $orderBy
+     * @param string $order
+     *
+     * @return ResultsetInterface
+     */
+    public function getInAndWhereByPage($page=1, $limit = 10, $whereInKey = null, array $whereIn = [], $where = [], $orderBy = null, $order = 'desc' )
+    {
+        $query = $this->model->query();
+
+        if (count($where) > 0){
+            $query = $this->applyWhere($query, $where);
+        }
+
+        if ($whereInKey){
+            $query->inWhere($whereInKey, $whereIn);
+        }
+
+        if ($orderBy) {
+            $query->orderBy($orderBy . ' ' . $order);
+        }
+
+        if ($limit) {
+            $query->limit($limit, $limit * ($page - 1));
         }
 
         return $query->execute();
@@ -315,8 +349,12 @@ class AbstractRepository implements RepositoryInterface
     {
         $query = $this->model->query();
 
+        if (count($where) > 0){
+            $query = $this->applyWhere($query, $where);
+        }
+
         if ($orderBy) {
-            $query = $this->applyWhere($query, $where)->orderBy($orderBy . ' ' . $order);
+            $query->orderBy($orderBy . ' ' . $order);
         }
 
         if ($limit) {
@@ -387,7 +425,6 @@ class AbstractRepository implements RepositoryInterface
     public function updateById($id, array $inputs)
     {
         $inputs = $this->purifyInputs($inputs);
-
         $model = $this->findOrFail($id);
 
         try {
@@ -555,10 +592,33 @@ class AbstractRepository implements RepositoryInterface
      */
     public function countBy(array $where = [])
     {
-        $model = clone $this->model;
-        $model->assign($where);
+        $bindArr = [];
+        $condArr = [];
 
-        return $model->count();
+        $intIndex = 0;
+
+        foreach ($where as $key => $val){
+            if (is_array($val)){
+                $value = $val[0];
+                $op = $val[1];
+            } else {
+                $value = $val;
+                $op = is_null($value) ? 'IS' : '=';
+            }
+
+            if (is_null($value)){
+                $condArr[] = $key . ' ' . $op . ' NULL';
+            } else {
+                $this->applyCountSubOr($key, $op, $value, $bindArr, $condArr, $intIndex);
+            }
+        }
+
+        $condStr = implode(" AND ", $condArr);
+
+        return $this->model->count([
+            $condStr,
+            "bind" => $bindArr
+        ]);
     }
 
     /**
@@ -579,39 +639,123 @@ class AbstractRepository implements RepositoryInterface
     // <--- INTERNALLY USED METHODS --->
 
     /**
+     * Build a bracketed or statement of the form (key1 = :value: OR key2 = :value: OR ...)
+     * This is a helper function to countBy method
+     *
+     * @param string $key the keys key1, key2 ... separated by magical '%OR%'
+     * @param string $op the operator to apply
+     * @param string $value the value to match
+     * @param array $bindArr bind array (passed by reference)
+     * @param array $condArr the search condition array (passed as reference)
+     * @param int $intIndex the index of the integer bind (passed by reference)
+     */
+    protected function applyCountSubOr($key, $op, $value, &$bindArr, &$condArr, &$intIndex) {
+        // Split key by magical '%OR%'
+        $orKeys = explode("%OR%", $key);
+        $orCounter = 0;
+        $whereStr = "";
+
+        foreach ($orKeys as $orK) {
+            if ($orCounter === 0){
+                $whereStr .= "(";
+            } else {
+                $whereStr .= " OR ";
+            }
+            $orCounter++;
+
+            if (is_int($value)) {
+                $bindArr[] = $value;
+                $whereStr .= $orK . ' ' . $op . ' ?' . $intIndex;
+                $intIndex ++;
+            } else {
+                $bindArr[$orK] = $value;
+                $whereStr .= $orK . ' ' . $op . ' :' . $orK . ':';
+            }
+        }
+
+        $whereStr .= ")";
+
+        $condArr[] = $whereStr;
+    }
+
+    /**
+     * Build a bracketed or statement of the form (key1 = :value: OR key2 = :value: OR ...)
+     * This is a helper function to applyWhere method
+     *
+     * @param string $key the keys key1, key2 ... separated by magical '%OR%'
+     * @param string $op the operator to apply
+     * @param string $value the value to match
+     * @param array $bindingArray bind array (passed by reference)
+     * @param int $counter the index of the bind (passed by reference)
+     *
+     * @return string
+     */
+    protected function applySubOr($key, $op, $value, &$bindingArray, &$counter){
+        // Split key by magical '%OR%'
+
+        $orKeys = explode("%OR%", $key);
+        $whereStr = "";
+        $orCounter = 0;
+
+        foreach ($orKeys as $orK){
+            if ($orCounter === 0){
+                $whereStr .= "(";
+            } else{
+                $whereStr .= " OR ";
+                //NOTE: Counter only needs to be increased when there is at least one OR applied
+                $counter ++;
+            }
+            $orCounter ++;
+
+            $whereStr .= $orK . " " . $op . " :value" . $counter . ":" ;
+            $bindingArray["value" . $counter] = $value;
+
+        }
+        $whereStr .= ")";
+
+        return($whereStr);
+    }
+
+    /**
      * Apply the where clauses to input query.
      *
      * @param  Criteria $query
      * @param  array $where
+     *         $where can be: 'key' => 'value'
+     *                    or: 'key' => ['value', 'operator'] with operator e.g. like
      *
      * @return Criteria
      */
-    protected function applyWhere(Criteria $query, array $where)
+    public function applyWhere(Criteria $query, array $where)
     {
         $bindingArray = [];
         $counter = 1;
 
-        foreach ($where as $key => $value) {
+        foreach ($where as $key => $val) {
+            if (!is_array($val)){
+                $value = $val;
+                $op = is_null($value) ? 'IS' : '=';
+            } else {
+                $value =$val[0];
+                $op = $val[1];
+            }
+
             if (is_null($value)) {
                 if ($counter == 1) {
-                    $query = $query->where($key . ": IS NULL");
-
+                    $query = $query->where($key . " " . $op . " " . "NULL");
                 } else {
-                    $query = $query->andWhere($key . ": IS NULL");
+                    $query = $query->andWhere($key . " " . $op . " ". "NULL");
                 }
             } else {
                 if ($counter == 1) {
-                    $query = $query->where($key . " = :value" . $counter . ":");
+                    $query = $query->where($this->applySubOr($key, $op, $value, $bindingArray, $counter));
                 } else {
-                    $query = $query->andWhere($key . " = :value" . $counter . ":");
+                    $query = $query->andWhere($this->applySubOr($key, $op, $value, $bindingArray, $counter));
                 }
-
-                $bindingArray["value" . $counter] = $value;
             }
 
             $counter++;
         }
-
         return $query->bind($bindingArray);
     }
 
