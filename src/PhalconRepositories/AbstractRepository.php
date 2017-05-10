@@ -133,7 +133,6 @@ class AbstractRepository implements RepositoryInterface
     public function getBy(array $where = [])
     {
         $query = $this->model->query();
-
         $query = $this->applyWhere($query, $where);
 
         return $query->execute();
@@ -150,7 +149,6 @@ class AbstractRepository implements RepositoryInterface
     public function getByLimit($limit, array $where = [])
     {
         $query = $this->model->query();
-
         $query = $this->applyWhere($query, $where)->limit($limit);
 
         return $query->execute();
@@ -170,7 +168,6 @@ class AbstractRepository implements RepositoryInterface
     public function getByOrder($orderBy, array $where = [], $order = 'desc', $limit = 0)
     {
         $query = $this->model->query();
-
         $query = $this->applyWhere($query, $where)->orderBy($orderBy . ' ' . $order);
 
         if ($limit) {
@@ -223,7 +220,6 @@ class AbstractRepository implements RepositoryInterface
     public function getNotIn($whereNotInKey, array $whereNotIn = [], $orderBy = null, $order = 'desc', $limit = 0)
     {
         $query = $this->model->query();
-
         $query->notInWhere($whereNotInKey, $whereNotIn);
 
         if ($orderBy) {

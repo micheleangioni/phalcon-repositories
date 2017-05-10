@@ -2,7 +2,7 @@
 
 namespace MicheleAngioni\PhalconRepositories\Tests;
 
-class AuthWebTest extends TestCase
+class RepositoryTest extends TestCase
 {
 
     public function testCreate()
@@ -95,8 +95,8 @@ class AuthWebTest extends TestCase
         $usersRepo = new UsersRepo();
         $this->createUsers($usersRepo, $userNumber);
 
-        $user = $usersRepo->firstBy(['username' => 'User 1']);
-        $this->assertEquals('User 1', $user->getUsername());
+        $user = $usersRepo->firstBy(['username' => 'User 2']);
+        $this->assertEquals('User 2', $user->getUsername());
     }
 
     /**
@@ -119,9 +119,39 @@ class AuthWebTest extends TestCase
         $usersRepo = new UsersRepo();
         $this->createUsers($usersRepo, $userNumber);
 
-        $users = $usersRepo->getBy(['username' => 'User 1']);
+        $users = $usersRepo->getBy(['username' => 'User 2']);
         $this->assertEquals(1, count($users));
-        $this->assertEquals('User 1', $users->getFirst()->getUsername());
+        $this->assertEquals('User 2', $users->getFirst()->getUsername());
+    }
+
+    public function testGetByWithLikeUsername()
+    {
+        $userNumber = 3;
+
+        $usersRepo = new UsersRepo();
+        $this->createUsers($usersRepo, $userNumber);
+
+        $data = [
+            'username%OR%text' => ['%Unique%', 'LIKE']
+        ];
+
+        $users = $usersRepo->getBy($data);
+        $this->assertEquals(1, count($users));
+    }
+
+    public function testGetByWithLikeText()
+    {
+        $userNumber = 3;
+
+        $usersRepo = new UsersRepo();
+        $this->createUsers($usersRepo, $userNumber);
+
+        $data = [
+            'username%OR%text' => ['%Particular%', 'LIKE']
+        ];
+
+        $users = $usersRepo->getBy($data);
+        $this->assertEquals(1, count($users));
     }
 
     public function testGetByLimit()
@@ -158,6 +188,22 @@ class AuthWebTest extends TestCase
         $users = $usersRepo->getNotIn('id', [2, 3]);
         $this->assertEquals(1, count($users));
         $this->assertEquals(1, $users->getFirst()->getId());
+    }
+
+    public function testGetInAndWhereByPage()
+    {
+        $userNumber = 5;
+        $idArray = [2, 3, 4];
+
+        $usersRepo = new UsersRepo();
+        $this->createUsers($usersRepo, $userNumber);
+
+        $users = $usersRepo->getInAndWhereByPage(1, 2,'id', $idArray);
+        $this->assertEquals(2, count($users));
+
+        foreach ($users as $user) {
+            $this->assertTrue(in_array($user->getId(), $idArray));
+        }
     }
 
     public function testGetByPage()
@@ -219,14 +265,71 @@ class AuthWebTest extends TestCase
         $usersRepo->findOrFail($userId);
     }
 
+    public function testCount()
+    {
+        $userNumber = 3;
+
+        $usersRepo = new UsersRepo();
+        $this->createUsers($usersRepo, $userNumber);
+
+        $countedUserNumber = $usersRepo->count();
+
+        $this->assertEquals($countedUserNumber, $userNumber);
+    }
+
+    public function testCountBy()
+    {
+        $userNumber = 3;
+
+        $usersRepo = new UsersRepo();
+        $this->createUsers($usersRepo, $userNumber);
+
+        $countedUserNumber = $usersRepo->countBy(['username' => 'User 1']);
+
+        $this->assertEquals(1, $countedUserNumber);
+    }
+
+    public function testCountByLikeUsername()
+    {
+        $userNumber = 3;
+
+        $usersRepo = new UsersRepo();
+        $this->createUsers($usersRepo, $userNumber);
+
+        $countedUserNumber = $usersRepo->countBy(['username%OR%text' => ['%Unique%', 'LIKE']]);
+
+        $this->assertEquals(1, $countedUserNumber);
+    }
+
+    public function testCountByLikeText()
+    {
+        $userNumber = 3;
+
+        $usersRepo = new UsersRepo();
+        $this->createUsers($usersRepo, $userNumber);
+
+        $countedUserNumber = $usersRepo->countBy(['username%OR%text' => ['%Particular%', 'LIKE']]);
+
+        $this->assertEquals(1, $countedUserNumber);
+    }
 
     protected function createUsers($userRepo, $number = 3)
     {
-        for ($i = 1; $i <= $number; $i++) {
+        if ($number == 0) {
+            return;
+        }
+
+        for ($i = 1; $i <= $number - 1; $i++) {
             $userRepo->create([
-                'username' => 'User ' . $i
+                'username' => 'User ' . $i,
+                'text' => 'Long Text ' . $i
             ]);
         }
+
+        $userRepo->create([
+            'username' => 'Unique Username ',
+            'text' => 'Particular text '
+        ]);
     }
 }
 
