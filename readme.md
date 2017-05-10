@@ -95,26 +95,26 @@ class PostsController extends Controller
 
 The `EloquentRepository` empowers automatically our repositories of the following public methods:
 
-- all()
-- find($id)
-- findOrFail($id)
-- first()
-- firstOrFail()
-- firstBy(array $where = [])
-- firstOrFailBy(array $where = [])
-- getBy(array $where = [])
-- getByLimit($limit, array $where = [])
-- getByOrder($orderBy, array $where = [], $order = 'desc', $limit = 0)
-- getIn($whereInKey, array $whereIn = [], $orderBy = NULL, $order = 'desc', $limit = 0)
-- getNotIn($whereNotInKey, array $whereNotIn = [], $orderBy = NULL, $order = 'desc', $limit = 0)
-- getInAndWhereByPage($page=1, $limit = 10, $whereInKey = null, array $whereIn = [], $where = [], $orderBy = null, $order = 'desc' )
-- getByPage($page = 1, $limit = 10, array $where = [], $orderBy = NULL, $order = 'desc')
-- create(array $inputs = [])
-- updateById($id, array $inputs)
-- destroy($id)
-- destroyFirstBy(array $where)
-- count()
-- countBy(array $where = [])
+- `all()`
+- `find($id)`
+- `findOrFail($id)`
+- `first()`
+- `firstOrFail()`
+- `firstBy(array $where = [])`
+- `firstOrFailBy(array $where = [])`
+- `getBy(array $where = [])`
+- `getByLimit(int $limit, array $where = [])`
+- `getByOrder(string $orderBy, array $where = [], string $order = 'desc', int $limit = 0)`
+- `getIn(string $whereInKey, array $whereIn = [], string $orderBy = null, string $order = 'desc', int $limit = 0)`
+- `getNotIn(string $whereNotInKey, array $whereNotIn = [], string $orderBy = null, string $order = 'desc', int $limit = 0)`
+- `getInAndWhereByPage(int $page = 1, int $limit = 10, string $whereInKey = null, array $whereIn = [], $where = [], $orderBy = null, string $order = 'desc')`
+- `getByPage(int $page = 1, int $limit = 10, array $where = [], string $orderBy = null, string $order = 'desc')`
+- `create(array $inputs = [])`
+- `updateById($id, array $inputs)`
+- `destroy($id)`
+- `destroyFirstBy(array $where)`
+- `count()`
+- `countBy(array $where = [])`
 
 ### The $where parameter
 

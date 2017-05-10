@@ -24,11 +24,13 @@ interface RepositoryInterface
 
     public function getByOrder(string $orderBy, array $where = [], string $order = 'desc', int $limit = 0);
 
-    public function getIn(string $whereInKey, array $whereIn = [], string $orderBy = NULL, string $order = 'desc', int $limit = 0);
+    public function getIn(string $whereInKey, array $whereIn = [], string $orderBy = null, string $order = 'desc', int $limit = 0);
 
-    public function getNotIn(string $whereNotInKey, array $whereNotIn = [], string $orderBy = NULL, string $order = 'desc', int $limit = 0);
+    public function getNotIn(string $whereNotInKey, array $whereNotIn = [], string $orderBy = null, string $order = 'desc', int $limit = 0);
 
-    public function getByPage(int $page = 1, int $limit = 10, array $where = [], string $orderBy = NULL, string $order = 'desc');
+    public function getInAndWhereByPage(int $page = 1, int $limit = 10, string $whereInKey = null, array $whereIn = [], $where = [], string $orderBy = null, string $order = 'desc' );
+
+    public function getByPage(int $page = 1, int $limit = 10, array $where = [], string $orderBy = null, string $order = 'desc');
 
     public function create(array $inputs = []);
 
