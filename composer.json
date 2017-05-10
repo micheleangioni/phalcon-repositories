@@ -10,17 +10,18 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
-        "ext-phalcon": ">=2.0.0"
+        "php": "^7.0",
+        "ext-phalcon": "^3.0"
     },
     "require-dev": {
         "phalcon/incubator": "dev-master",
-        "phpunit/phpunit": "^4.8"
+        "phpunit/phpunit": "^5.7"
     },
     "autoload": {
         "psr-4": {
             "MicheleAngioni\\PhalconRepositories\\": "src/PhalconRepositories"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
