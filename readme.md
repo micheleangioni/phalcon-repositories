@@ -9,9 +9,11 @@
 
 Phalcon Repositories lets you easily build repositories for your Phalcon models.
 
+PHP 7.0+ and Phalcon 3 are required.
+
 ## Installation
 
-Support can be installed through Composer, just include `"michele-angioni/phalcon-repositories": "~0.1"` to your composer.json and run `composer update` or `composer install`.
+Support can be installed through Composer, just include `"michele-angioni/phalcon-repositories": "~0.2"` to your composer.json and run `composer update` or `composer install`.
 
 ## Usage
 
@@ -105,6 +107,7 @@ The `EloquentRepository` empowers automatically our repositories of the followin
 - getByOrder($orderBy, array $where = [], $order = 'desc', $limit = 0)
 - getIn($whereInKey, array $whereIn = [], $orderBy = NULL, $order = 'desc', $limit = 0)
 - getNotIn($whereNotInKey, array $whereNotIn = [], $orderBy = NULL, $order = 'desc', $limit = 0)
+- getInAndWhereByPage($page=1, $limit = 10, $whereInKey = null, array $whereIn = [], $where = [], $orderBy = null, $order = 'desc' )
 - getByPage($page = 1, $limit = 10, array $where = [], $orderBy = NULL, $order = 'desc')
 - create(array $inputs = [])
 - updateById($id, array $inputs)
@@ -113,12 +116,49 @@ The `EloquentRepository` empowers automatically our repositories of the followin
 - count()
 - countBy(array $where = [])
 
+### The $where parameter
+
+The `$where` parameter allows the use of various operators, other than the equals `=`, even the `LIKE` keyword.
+
+The following formats are supported:
+
+- `'key' => 'value'`
+
+    Examples:
+
+    ```php
+    $where = ['username' => 'Richard']
+    ```
+
+- `'key' => ['value', 'operator']`
+
+    Examples:
+
+    ```php
+    $where = ['age' => [30, '=']]
+    $where = ['age' => [30, '<']]
+    $where = ['age' => [30, '>']]
+    $where = ['username' => ['%Fey%', 'LIKE']]
+    ```
+
+- `['key1%OR%key2'] => ['value', 'operator']`
+
+    Examples:
+
+    ```php
+    `$where = ['username%OR%description' => ['%Feynman%', 'LIKE']]`
+    ```
+
 ### SQL Injection
 
 The `AbstractRepository` uses bind parameters for all `$id` and `$where` clauses. 
 `$inputs` parameters in create and update queries are automatically escaped by Phalcon.
 
 The security of the other parameters ($whereInKey, $whereIn = [], $orderBy, $order, $limit etc.) is up to you.
+
+## Testing
+
+Install dependencies with `composer install` and then run `vendor/bin/phpunit tests`.
 
 ## Contribution guidelines
 
