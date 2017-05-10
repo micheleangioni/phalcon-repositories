@@ -20,15 +20,15 @@ interface RepositoryInterface
 
     public function getBy(array $where = []);
 
-    public function getByLimit($limit, array $where = []);
+    public function getByLimit(int $limit, array $where = []);
 
-    public function getByOrder($orderBy, array $where = [], $order = 'desc', $limit = 0);
+    public function getByOrder(string $orderBy, array $where = [], string $order = 'desc', int $limit = 0);
 
-    public function getIn($whereInKey, array $whereIn = [], $orderBy = NULL, $order = 'desc', $limit = 0);
+    public function getIn(string $whereInKey, array $whereIn = [], string $orderBy = NULL, string $order = 'desc', int $limit = 0);
 
-    public function getNotIn($whereNotInKey, array $whereNotIn = [], $orderBy = NULL, $order = 'desc', $limit = 0);
+    public function getNotIn(string $whereNotInKey, array $whereNotIn = [], string $orderBy = NULL, string $order = 'desc', int $limit = 0);
 
-    public function getByPage($page = 1, $limit = 10, array $where = [], $orderBy = NULL, $order = 'desc');
+    public function getByPage(int $page = 1, int $limit = 10, array $where = [], string $orderBy = NULL, string $order = 'desc');
 
     public function create(array $inputs = []);
 

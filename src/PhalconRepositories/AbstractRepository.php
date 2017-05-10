@@ -18,7 +18,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return ResultsetInterface
      */
-    public function all()
+    public function all(): ResultsetInterface
     {
         return $this->model->find();
     }
@@ -44,12 +44,11 @@ class AbstractRepository implements RepositoryInterface
      * Throws exception if not found.
      *
      * @param  int|string $id
-     *
      * @throws ModelNotFoundException
      *
      * @return \Phalcon\Mvc\Model
      */
-    public function findOrFail($id)
+    public function findOrFail($id): Model
     {
         if (!$record = $this->model->findFirst(["id = :value:", 'bind' => ['value' => $id]])) {
             throw new ModelNotFoundException("Caught ModelNotFoundException in " . __METHOD__ . ' at line ' . __LINE__ . ': Model not found.');
@@ -76,7 +75,7 @@ class AbstractRepository implements RepositoryInterface
      * @throws ModelNotFoundException
      * @return \Phalcon\Mvc\Model
      */
-    public function firstOrFail()
+    public function firstOrFail(): Model
     {
         if (!$record = $this->model->findFirst()) {
             throw new ModelNotFoundException("Caught ModelNotFoundException in " . __METHOD__ . ' at line ' . __LINE__ . ': No models found.');
@@ -111,7 +110,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return \Phalcon\Mvc\Model
      */
-    public function firstOrFailBy(array $where = [])
+    public function firstOrFailBy(array $where = []): Model
     {
         $query = $this->model->query();
         $model = $this->applyWhere($query, $where)->limit(1)->execute()->getFirst();
@@ -130,7 +129,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return ResultsetInterface
      */
-    public function getBy(array $where = [])
+    public function getBy(array $where = []): ResultsetInterface
     {
         $query = $this->model->query();
         $query = $this->applyWhere($query, $where);
@@ -146,7 +145,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return ResultsetInterface
      */
-    public function getByLimit($limit, array $where = [])
+    public function getByLimit(int $limit, array $where = []): ResultsetInterface
     {
         $query = $this->model->query();
         $query = $this->applyWhere($query, $where)->limit($limit);
@@ -165,7 +164,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return ResultsetInterface
      */
-    public function getByOrder($orderBy, array $where = [], $order = 'desc', $limit = 0)
+    public function getByOrder(string $orderBy, array $where = [], string $order = 'desc', int $limit = 0): ResultsetInterface
     {
         $query = $this->model->query();
         $query = $this->applyWhere($query, $where)->orderBy($orderBy . ' ' . $order);
@@ -189,7 +188,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return ResultsetInterface
      */
-    public function getIn($whereInKey, array $whereIn = [], $orderBy = null, $order = 'desc', $limit = 0)
+    public function getIn(string $whereInKey, array $whereIn = [], string $orderBy = null, string $order = 'desc', int $limit = 0): ResultsetInterface
     {
         $query = $this->model->query();
         $query->inWhere($whereInKey, $whereIn);
@@ -217,7 +216,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return ResultsetInterface
      */
-    public function getNotIn($whereNotInKey, array $whereNotIn = [], $orderBy = null, $order = 'desc', $limit = 0)
+    public function getNotIn(string $whereNotInKey, array $whereNotIn = [], string $orderBy = null, string $order = 'desc', int $limit = 0): ResultsetInterface
     {
         $query = $this->model->query();
         $query->notInWhere($whereNotInKey, $whereNotIn);
@@ -247,7 +246,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return ResultsetInterface
      */
-    public function getInAndWhereByPage($page=1, $limit = 10, $whereInKey = null, array $whereIn = [], $where = [], $orderBy = null, $order = 'desc' )
+    public function getInAndWhereByPage(int $page = 1, int $limit = 10, string $whereInKey = null, array $whereIn = [], $where = [], string $orderBy = null, string $order = 'desc' ): ResultsetInterface
     {
         $query = $this->model->query();
 
@@ -341,7 +340,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return ResultsetInterface
      */
-    public function getByPage($page = 1, $limit = 10, array $where = [], $orderBy = null, $order = 'desc')
+    public function getByPage(int $page = 1, int $limit = 10, array $where = [], string $orderBy = null, string $order = 'desc'): ResultsetInterface
     {
         $query = $this->model->query();
 
@@ -373,7 +372,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return \Phalcon\Mvc\Model
      */
-    public function create(array $inputs = [])
+    public function create(array $inputs = []): Model
     {
         $model = clone $this->model;
 
@@ -418,7 +417,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return \Phalcon\Mvc\Model
      */
-    public function updateById($id, array $inputs)
+    public function updateById($id, array $inputs): Model
     {
         $inputs = $this->purifyInputs($inputs);
         $model = $this->findOrFail($id);
@@ -497,7 +496,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return bool
      */
-    public function destroy($id)
+    public function destroy($id): bool
     {
         $model = $this->findOrFail($id);
 
@@ -526,7 +525,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return bool
      */
-    public function destroyFirstBy(array $where)
+    public function destroyFirstBy(array $where): bool
     {
         $model = $this->firstOrFailBy($where);
 
@@ -574,7 +573,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->model->count();
     }
@@ -586,7 +585,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return int
      */
-    public function countBy(array $where = [])
+    public function countBy(array $where = []): int
     {
         $bindArr = [];
         $condArr = [];
