@@ -376,11 +376,7 @@ class AbstractRepository implements RepositoryInterface
     {
         $model = clone $this->model;
 
-        try {
-            $result = $model->create($inputs);
-        } catch (\Exception $e) {
-            throw new \RuntimeException("Caught RuntimeException in " . __METHOD__ . ' at line ' . __LINE__ . ': ' . $e->getMessage());
-        }
+        $result = $model->create($inputs);
 
         if (!$result) {
             $errorMessages = implode('. ', $model->getMessages());
@@ -422,11 +418,7 @@ class AbstractRepository implements RepositoryInterface
         $inputs = $this->purifyInputs($inputs);
         $model = $this->findOrFail($id);
 
-        try {
-            $result = $model->update($inputs);
-        } catch (\Exception $e) {
-            throw new \RuntimeException("Caught RuntimeException in " . __METHOD__ . ' at line ' . __LINE__ . ': ' . $e->getMessage());
-        }
+        $result = $model->update($inputs);
 
         if (!$result) {
             $errorMessages = implode('. ', $model->getMessages());
@@ -471,11 +463,7 @@ class AbstractRepository implements RepositoryInterface
         $model = clone $this->model;
         $model->assign($inputs);
 
-        try {
-            $result = $model->save($inputs);
-        } catch (\Exception $e) {
-            throw new \RuntimeException("Caught RuntimeException in ".__METHOD__.' at line '.__LINE__.': ' .$e->getMessage());
-        }
+        $result = $model->save($inputs);
 
         if(!$result) {
             $errorMessages = implode('. ', $model->getMessages());
@@ -500,11 +488,7 @@ class AbstractRepository implements RepositoryInterface
     {
         $model = $this->findOrFail($id);
 
-        try {
-            $result = $model->delete();
-        } catch (\Exception $e) {
-            throw new \RuntimeException("Caught RuntimeException in " . __METHOD__ . ' at line ' . __LINE__ . ': ' . $e->getMessage());
-        }
+        $result = $model->delete();
 
         if (!$result) {
             $errorMessages = implode('. ', $model->getMessages());
@@ -529,11 +513,7 @@ class AbstractRepository implements RepositoryInterface
     {
         $model = $this->firstOrFailBy($where);
 
-        try {
-            $result = $model->delete();
-        } catch (\Exception $e) {
-            throw new \RuntimeException("Caught RuntimeException in " . __METHOD__ . ' at line ' . __LINE__ . ': ' . $e->getMessage());
-        }
+        $result = $model->delete();
 
         if (!$result) {
             $errorMessages = implode('. ', $model->getMessages());
