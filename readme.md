@@ -7,15 +7,16 @@
 
 ## Introduction
 
-Phalcon Repositories lets you easily build repositories for your Phalcon models.
+Phalcon Repositories lets you easily build repositories for your Phalcon models, for both **SQL** and **Mongo** drivers.
 
 PHP 7.0+ and Phalcon 3 are required.
+The PHP Mongo extension is required when using the AbstractCollectionRepository.
 
 ## Installation
 
-Support can be installed through Composer, just include `"michele-angioni/phalcon-repositories": "~0.2"` to your composer.json and run `composer update` or `composer install`.
+Phalcon Repositories can be installed through Composer, just include `"michele-angioni/phalcon-repositories": "~0.3"` to your composer.json and run `composer update` or `composer install`.
 
-## Usage
+## Usage with SQL Drivers
 
 The abstract class `AbstractRepository` consists of a model wrapper with numerous useful queries to be performed over the Phalcon models.
 This way implementing the repository pattern becomes straightforward.
@@ -25,7 +26,9 @@ As an example let's say we have a `MyApp\Models\Posts` model.
 The easiest way to create a Posts repository is to define a class as such
 
 ```php
-<?php namespace MyApp\Repos;
+<?php
+
+namespace MyApp\Repos;
 
 use MicheleAngioni\PhalconRepositories\AbstractRepository;
 use MyApp\Models\Posts;
@@ -41,20 +44,23 @@ class PostsRepository extends AbstractEloquentRepository
 }
 ```
 
-Suppose now we need the Post repository in our PostController. For example we can retrieve a post this way 
+Suppose now we need the Post repository in our PostController. For example we can retrieve a Post this way
 
 ```php
-<?php namespace MyApp\Controllers;
+<?php
+
+namespace MyApp\Controllers;
 
 use MyApp\Repos\PostsRepository as PostsRepo;
 use Phalcon\Mvc\Controller;
+use MyApp\Models\Posts;
 
 class PostsController extends Controller 
 {
     
     public function showAction($idPost)
     {
-        $postsRepo = new PostsRepo();
+        $postsRepo = new PostsRepo(new Posts());
         
         $post = $postsRepo->find($idPost);
 
@@ -68,14 +74,16 @@ We just need to add a new `postRepo` service in our bootstrap file
 
 ```php
 $di->set('postsRepo', function () {
-    return new MyApp\Repos\PostsRepository();
+    return new MyApp\Repos\PostsRepository(new \MyApp\Models\Posts());
 });
 ```
 
 and than use it in the controller
 
 ```php
-<?php namespace MyApp\Controllers;
+<?php
+
+namespace MyApp\Controllers;
 
 use Phalcon\Mvc\Controller;
 
@@ -88,12 +96,112 @@ class PostsController extends Controller
         
         $post = $postsRepo->find($idPost);
 
+        // Use the retrieved Post
+    }
+}
+```
+
+## Usage with MongoDB
+
+The abstract class `AbstractCollectionRepository`, similary to `AbstractRepository`, consists of a model wrapper with numerous useful queries to be performed over the Phalcon collections.
+This way implementing the repository pattern becomes straightforward.
+
+As an example let's say we have a `MyApp\Models\Posts` collection
+
+```php
+<?php
+
+namespace MyApp\Models;
+
+use Phalcon\Mvc\MongoCollection;
+
+class Posts extends MongoCollection
+{
+    use \MicheleAngioni\PhalconRepositories\MongoFix; // Fix for Phalcon 3.1.x with PHP 7.1
+
+    [...]
+}
+```
+
+The easiest way to create a Posts repository is to define a class as such
+
+```php
+<?php namespace MyApp\Repos;
+
+use MicheleAngioni\PhalconRepositories\AbstractCollectionRepository;
+use MyApp\Models\Posts;
+
+class PostsRepository extends AbstractCollectionRepository
+{
+    protected $model;
+
+    public function __construct(Posts $model)
+    {
+        $this->model = $model;
+    }
+}
+```
+
+Suppose now we need the Post repository in our PostController. For example we can retrieve a Post this way
+
+```php
+<?php
+
+namespace MyApp\Controllers;
+
+use MyApp\Repos\PostsRepository as PostsRepo;
+use Phalcon\Mvc\Controller;
+use MyApp\Models\Posts;
+
+class PostsController extends Controller
+{
+
+    public function showAction($idPost)
+    {
+        $postsRepo = new PostsRepo(new Posts());
+
+        $post = $postsRepo->find($idPost);
+
+        // Use the retrieved Post
+    }
+}
+```
+
+We could also bind out repository to the container through the Phalcon dependency injection.
+We just need to add a new `postRepo` service in our bootstrap file
+
+```php
+$di->set('postsRepo', function () {
+    return new MyApp\Repos\PostsRepository(new \MyApp\Models\Posts());
+});
+```
+
+and than use it in the controller
+
+```php
+<?php
+
+namespace MyApp\Controllers;
+
+use Phalcon\Mvc\Controller;
+
+class PostsController extends Controller
+{
+
+    public function showAction($idPost)
+    {
+        $postsRepo = $this->getDI()->getPostsRepo();
+
+        $post = $postsRepo->find($idPost);
+
         // Use the retrieved post
     }
 }
 ```
 
-The `EloquentRepository` empowers automatically our repositories of the following public methods:
+### Method list
+
+The `AbstractRepository` and `AbstractCollectionRepository` empower automatically our repositories of the following public methods:
 
 - `all()`
 - `find($id)`
@@ -116,9 +224,9 @@ The `EloquentRepository` empowers automatically our repositories of the followin
 - `count()`
 - `countBy(array $where = [])`
 
-### The $where parameter
+### The $where parameter with SQL drivers
 
-The `$where` parameter allows the use of various operators, other than the equals `=`, even the `LIKE` keyword.
+The `$where` parameter allows the use of various operators with the SQL driver, other than the equals `=`, even the `LIKE` keyword.
 
 The following formats are supported:
 
@@ -151,7 +259,7 @@ The following formats are supported:
 
 ### SQL Injection
 
-The `AbstractRepository` uses bind parameters for all `$id` and `$where` clauses. 
+The `AbstractRepository` and `AbstractCollectionRepository` use bind parameters for all `$id` and `$where` clauses.
 `$inputs` parameters in create and update queries are automatically escaped by Phalcon.
 
 The security of the other parameters ($whereInKey, $whereIn = [], $orderBy, $order, $limit etc.) is up to you.
