@@ -314,7 +314,7 @@ class UsersMongoRepo extends \MicheleAngioni\PhalconRepositories\AbstractCollect
 
 class UsersMongo extends \Phalcon\Mvc\MongoCollection
 {
-    use \MicheleAngioni\PhalconRepositories\MongoFix;
+//    use \MicheleAngioni\PhalconRepositories\MongoFix;
 
     public $id;
 
