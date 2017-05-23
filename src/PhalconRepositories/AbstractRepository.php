@@ -246,7 +246,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @return ResultsetInterface
      */
-    public function getInAndWhereByPage(int $page = 1, int $limit = 10, string $whereInKey = null, array $whereIn = [], $where = [], string $orderBy = null, string $order = 'desc' ): ResultsetInterface
+    public function getInAndWhereByPage(int $page = 1, int $limit = 10, string $whereInKey = null, array $whereIn = [], array $where = [], string $orderBy = null, string $order = 'desc' ): ResultsetInterface
     {
         $query = $this->model->query();
 

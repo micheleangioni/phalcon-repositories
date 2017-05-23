@@ -28,7 +28,7 @@ interface RepositoryInterface
 
     public function getNotIn(string $whereNotInKey, array $whereNotIn = [], string $orderBy = null, string $order = 'desc', int $limit = 0);
 
-    public function getInAndWhereByPage(int $page = 1, int $limit = 10, string $whereInKey = null, array $whereIn = [], $where = [], string $orderBy = null, string $order = 'desc' );
+    public function getInAndWhereByPage(int $page = 1, int $limit = 10, string $whereInKey = null, array $whereIn = [], array $where = [], string $orderBy = null, string $order = 'desc' );
 
     public function getByPage(int $page = 1, int $limit = 10, array $where = [], string $orderBy = null, string $order = 'desc');
 
