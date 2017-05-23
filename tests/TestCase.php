@@ -60,6 +60,22 @@ abstract class TestCase extends PhalconTestCase
             ]);
         });
 
+        /**
+         * Database connection is created based in the parameters defined in the configuration file
+         */
+        $di->setShared('mongo', function () {
+            $dsn = 'mongodb://localhost';
+
+            $mongo = new \Phalcon\Db\Adapter\MongoDB\Client($dsn);
+
+            return $mongo->selectDatabase('testing');
+        });
+
+        // Collection Manager is required for MongoDB
+        $di->setShared('collectionManager', function () {
+            return new \Phalcon\Mvc\Collection\Manager();
+        });
+
         $this->setDi($di);
 
         $this->_loaded = true;
