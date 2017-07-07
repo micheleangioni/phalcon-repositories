@@ -14,7 +14,7 @@
         "ext-phalcon": "^3.0"
     },
     "require-dev": {
-        "phalcon/incubator": "dev-master",
+        "phalcon/incubator": "^3.0",
         "phpunit/phpunit": "^5.7"
     },
     "autoload": {
