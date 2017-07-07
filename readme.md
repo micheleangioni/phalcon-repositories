@@ -9,9 +9,7 @@
 
 Phalcon Repositories lets you easily build repositories for your Phalcon models, for both **SQL** and **Mongo** drivers.
 
-PHP 7.0+ and Phalcon 3 are required.
-
-**(!) The PHP Mongo extension and Phalcon 3.2+ are required when using the AbstractCollectionRepository.**
+PHP 7.1+ and Phalcon 3.2+ are required.
 
 ## Installation
 
@@ -103,8 +101,6 @@ class PostsController extends Controller
 ```
 
 ## Usage with MongoDB
-
-**(!) The PHP Mongo extension and Phalcon 3.2+ are required when using the AbstractCollectionRepository.**
 
 The abstract class `AbstractCollectionRepository`, similary to `AbstractRepository`, consists of a model wrapper with numerous useful queries to be performed over the Phalcon collections.
 This way implementing the repository pattern becomes straightforward.
