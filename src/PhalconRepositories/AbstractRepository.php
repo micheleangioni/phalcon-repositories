@@ -542,7 +542,14 @@ class AbstractRepository implements RepositoryInterface
      */
     public function truncate()
     {
-        // TODO
+        $query = 'TRUNCATE ' . $this->model->getSource();
+
+        $modelName = get_class($this->model);
+        $model = new $modelName;
+
+        $model->getReadConnection()->query($query);
+
+        return true;
     }
 
 

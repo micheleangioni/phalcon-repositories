@@ -265,6 +265,13 @@ class RepositoryTest extends TestCase
         $usersRepo->findOrFail($userId);
     }
 
+    public function testTruncate()
+    {
+        // $this->markTestSkipped(
+            // 'The TRUNCATE keyword is not present in SQLite, so the truncate() method cannot be tested.'
+        // );
+    }
+
     public function testCount()
     {
         $userNumber = 3;
@@ -274,7 +281,7 @@ class RepositoryTest extends TestCase
 
         $countedUserNumber = $usersRepo->count();
 
-        $this->assertEquals($countedUserNumber, $userNumber);
+        $this->assertEquals($userNumber, $countedUserNumber);
     }
 
     public function testCountBy()
