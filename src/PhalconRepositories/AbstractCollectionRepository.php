@@ -332,7 +332,7 @@ class AbstractCollectionRepository implements RepositoryInterface
     public function getHas(string $relation, array $where = [], int $hasAtLeast = 1)
     {
         // TODO
-        throw new \BadMethodCallException("TODO Method");
+        throw new \BadMethodCallException('TODO Method');
     }
 
     /**
@@ -348,7 +348,7 @@ class AbstractCollectionRepository implements RepositoryInterface
     public function hasFirst(string $relation, array $where = [], int $hasAtLeast = 1)
     {
         // TODO
-        throw new \BadMethodCallException("TODO Method");
+        throw new \BadMethodCallException('TODO Method');
     }
 
     /**
@@ -366,7 +366,7 @@ class AbstractCollectionRepository implements RepositoryInterface
     public function hasFirstOrFail(string $relation, array $where = [], int $hasAtLeast = 1)
     {
         // TODO
-        throw new \BadMethodCallException("TODO Method");
+        throw new \BadMethodCallException('TODO Method');
     }
 
     /**
@@ -381,7 +381,7 @@ class AbstractCollectionRepository implements RepositoryInterface
     public function whereHas(string $relation, array $where = [], array $whereHas = [])
     {
         // TODO
-        throw new \BadMethodCallException("TODO Method");
+        throw new \BadMethodCallException('TODO Method');
     }
 
     /**
@@ -526,7 +526,7 @@ class AbstractCollectionRepository implements RepositoryInterface
         // TODO
         // https://forum.phalconphp.com/discussion/770/how-to-upsert-update-or-insert-mongodb-in-odm-
         // $this->getConnection()->{$this->getSource()}->update($criteria, $new_object, array('upsert' => true))
-        throw new \BadMethodCallException("TODO Method");
+        throw new \BadMethodCallException('TODO Method');
     }
 
     /**
@@ -611,7 +611,7 @@ class AbstractCollectionRepository implements RepositoryInterface
     public function updateBy(array $where, array $inputs)
     {
         // TODO
-        throw new \BadMethodCallException("TODO Method");
+        throw new \BadMethodCallException('TODO Method');
     }
 
     /**
@@ -629,7 +629,7 @@ class AbstractCollectionRepository implements RepositoryInterface
     public function updateOrCreateBy(array $where, array $inputs = [])
     {
         // TODO
-        throw new \BadMethodCallException("TODO Method");
+        throw new \BadMethodCallException('TODO Method');
     }
 
     /**
@@ -637,6 +637,7 @@ class AbstractCollectionRepository implements RepositoryInterface
      *
      * @param  string $id
      *
+     * @throws ModelNotFoundException
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      *
@@ -667,6 +668,7 @@ class AbstractCollectionRepository implements RepositoryInterface
      *
      * @param array $where
      *
+     * @throws ModelNotFoundException
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      *
@@ -701,7 +703,7 @@ class AbstractCollectionRepository implements RepositoryInterface
     public function destroyBy(array $where)
     {
         // TODO
-        throw new \BadMethodCallException("TODO Method");
+        throw new \BadMethodCallException('TODO Method');
     }
 
     /**
@@ -712,7 +714,7 @@ class AbstractCollectionRepository implements RepositoryInterface
     public function truncate()
     {
         // TODO
-        throw new \BadMethodCallException("TODO Method");
+        throw new \BadMethodCallException('TODO Method');
     }
 
     // <--- COUNT METHODS --->
@@ -752,7 +754,7 @@ class AbstractCollectionRepository implements RepositoryInterface
     public function countWhereHas(string $relation, array $where = [], array $whereHas = [])
     {
         // TODO
-        throw new \BadMethodCallException("TODO Method");
+        throw new \BadMethodCallException('TODO Method');
     }
 
     /**

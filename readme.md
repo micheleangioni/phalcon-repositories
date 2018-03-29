@@ -223,6 +223,14 @@ The `AbstractRepository` and `AbstractCollectionRepository` empower automaticall
 - `count()`
 - `countBy(array $where = [])`
 
+The `AbstractRepository` contains also the method:
+
+- `truncate()`
+
+while the `AbstractCollectionRepository` allows for aggregations through:
+
+- `getAggregate(array $match = [], array $project = [], array $group = [], int $limit = 0)`
+
 ### The $where parameter with SQL drivers
 
 The `$where` parameter allows the use of various operators with the SQL driver, other than the equals `=`, even the `LIKE` keyword.
