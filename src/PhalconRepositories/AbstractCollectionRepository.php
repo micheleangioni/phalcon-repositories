@@ -726,20 +726,42 @@ class AbstractCollectionRepository implements RepositoryInterface
      */
     public function count()
     {
-        return count($this->all());
-    }
+        $aggregateArray = [
+            [
+                '$count' => 'number'
+            ]
+        ];
 
+        $result = $this->model::aggregate($aggregateArray);
+
+        return $result->toArray()[0]['number'];
+    }
 
     /**
      * Count the number of records matching input parameters.
      *
-     * @param  array $where
-     *
+     * @param array $match
      * @return int
      */
-    public function countBy(array $where = [])
+    public function countBy(array $match = [])
     {
-        return count($this->getBy($where));
+        $aggregateArray = [];
+
+        if (count($match) > 0) {
+            $matchArray = [
+                '$match' => $match
+            ];
+
+            $aggregateArray[] = $matchArray;
+        }
+
+        $aggregateArray[] = [
+            '$count' => 'number'
+        ];
+
+        $result = $this->model::aggregate($aggregateArray);
+
+        return $result->toArray()[0]['number'];
     }
 
     /**
