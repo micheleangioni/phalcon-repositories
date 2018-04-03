@@ -157,10 +157,10 @@ class AbstractCollectionRepository implements RepositoryInterface
      */
     public function getByOrder(string $orderBy, array $where = [], string $order = 'desc', int $limit = 0)
     {
-        if ($order == 'desc') {
-            $code = 1;
-        } else if ($order == 'asc') {
+        if ($order === 'desc') {
             $code = -1;
+        } else if ($order === 'asc') {
+            $code = 1;
         } else {
             throw new \InvalidArgumentException('$order must be desc or asc');
         }
@@ -199,10 +199,10 @@ class AbstractCollectionRepository implements RepositoryInterface
             ]
         ];
 
-        if ($order == 'desc') {
-            $code = 1;
-        } else if ($order == 'asc') {
+        if ($order === 'desc') {
             $code = -1;
+        } else if ($order === 'asc') {
+            $code = 1;
         } else {
             throw new \InvalidArgumentException('$order must be desc or asc');
         }
@@ -247,10 +247,10 @@ class AbstractCollectionRepository implements RepositoryInterface
             ]
         ];
 
-        if ($order == 'desc') {
-            $code = 1;
-        } else if ($order == 'asc') {
+        if ($order === 'desc') {
             $code = -1;
+        } else if ($order === 'asc') {
+            $code = 1;
         } else {
             throw new \InvalidArgumentException('$order must be desc or asc');
         }
@@ -294,10 +294,10 @@ class AbstractCollectionRepository implements RepositoryInterface
             ]
         ];
 
-        if ($order == 'desc') {
-            $code = 1;
-        } else if ($order == 'asc') {
+        if ($order === 'desc') {
             $code = -1;
+        } else if ($order === 'asc') {
+            $code = 1;
         } else {
             throw new \InvalidArgumentException('$order must be desc or asc');
         }
@@ -397,10 +397,10 @@ class AbstractCollectionRepository implements RepositoryInterface
      */
     public function getByPage(int $page = 1, int $limit = 10, array $where = [], string $orderBy = null, string $order = 'desc')
     {
-        if ($order == 'desc') {
-            $code = 1;
-        } else if ($order == 'asc') {
+        if ($order === 'desc') {
             $code = -1;
+        } else if ($order === 'asc') {
+            $code = 1;
         } else {
             throw new \InvalidArgumentException('$order must be desc or asc');
         }
