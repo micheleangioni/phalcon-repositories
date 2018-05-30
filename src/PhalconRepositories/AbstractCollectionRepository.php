@@ -224,7 +224,7 @@ class AbstractCollectionRepository implements RepositoryInterface
 
         return $this->model->find($input);
     }
-    
+
     /**
      * Return the first ordered $limit records querying input parameters.
      * $limit = 0 means no limits.
@@ -272,7 +272,7 @@ class AbstractCollectionRepository implements RepositoryInterface
         }
 
         return $this->model->find($input);
-    }   
+    }
 
     /**
      * Return the first ordered $limit records querying input parameters.
@@ -726,15 +726,8 @@ class AbstractCollectionRepository implements RepositoryInterface
      */
     public function count()
     {
-        $aggregateArray = [
-            [
-                '$count' => 'number'
-            ]
-        ];
 
-        $result = $this->model::aggregate($aggregateArray);
-
-        return $result->toArray()[0]['number'];
+        return $this->countBy([]);
     }
 
     /**
@@ -759,9 +752,13 @@ class AbstractCollectionRepository implements RepositoryInterface
             '$count' => 'number'
         ];
 
-        $result = $this->model::aggregate($aggregateArray);
+        $result = $this->model::aggregate($aggregateArray)->toArray();
 
-        return $result->toArray()[0]['number'];
+        if (count($result)) {
+            return $result[0]['number'];
+        }
+
+        return 0;
     }
 
     /**
