@@ -218,6 +218,24 @@ class RepositoryTest extends TestCase
         $this->assertEquals(2, $users->getFirst()->getId());
     }
 
+    public function testGetByGroupBy()
+    {
+        $userNumber = 3;
+
+        $usersRepo = new UsersRepo();
+        $users = $this->createUsers($usersRepo, $userNumber);
+        $users[2]->setText($users[1]->getText());
+        $users[2]->save();
+
+        $usersList = $usersRepo->getByGroupBy('text', [], true);
+
+        $this->assertEquals(2, count($usersList));
+        $this->assertTrue($usersList[0]['text'] === $users[0]->getText());
+        $this->assertTrue((int)$usersList[0]['number'] === 1);
+        $this->assertTrue($usersList[1]['text'] === $users[1]->getText());
+        $this->assertTrue((int)$usersList[1]['number'] === 2);
+    }
+
     public function testUpdateById()
     {
         $userNumber = 3;
@@ -326,17 +344,21 @@ class RepositoryTest extends TestCase
             return;
         }
 
+        $users = [];
+
         for ($i = 1; $i <= $number - 1; $i++) {
-            $userRepo->create([
+            $users[] = $userRepo->create([
                 'username' => 'User ' . $i,
                 'text' => 'Long Text ' . $i
             ]);
         }
 
-        $userRepo->create([
+        $users[] = $userRepo->create([
             'username' => 'Unique Username ',
             'text' => 'Particular text '
         ]);
+
+        return $users;
     }
 }
 
@@ -376,9 +398,19 @@ class Users extends \Phalcon\Mvc\Model
         return $this->username;
     }
 
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
     public function getText()
     {
         return $this->text;
+    }
+
+    public function setText($text)
+    {
+        $this->text = $text;
     }
 
     public static function find($parameters = null)

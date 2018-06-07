@@ -359,6 +359,35 @@ class AbstractRepository implements RepositoryInterface
         return $query->execute();
     }
 
+    /**
+     * Get grouped by results.
+     *
+     * @param string $groupBy
+     * @param array $where
+     * @param bool $addCounts
+     *
+     * @return ResultsetInterface
+     */
+    public function getByGroupBy(string $groupBy, array $where = [], bool $addCounts = false): ResultsetInterface
+    {
+        $query = $this->model->query();
+
+        if (count($where) > 0){
+            $query = $this->applyWhere($query, $where);
+        }
+
+        $columns = [$groupBy];
+
+        if ($addCounts) {
+            $columns['number'] = "COUNT($groupBy)";
+        }
+
+        $query->columns($columns);
+        $query->groupBy($groupBy);
+
+        return $query->execute();
+    }
+
 
     // <--- CREATING / UPDATING / DELETING METHODS --->
 
