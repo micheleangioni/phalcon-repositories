@@ -408,6 +408,7 @@ class AbstractRepository implements RepositoryInterface
      * @param  int $id
      * @param  array $inputs
      *
+     * @throws ModelNotFoundException
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      *
@@ -479,6 +480,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @param  int $id
      *
+     * @throws ModelNotFoundException
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      *
@@ -504,6 +506,7 @@ class AbstractRepository implements RepositoryInterface
      *
      * @param array $where
      *
+     * @throws ModelNotFoundException
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      *
