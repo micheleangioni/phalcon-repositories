@@ -338,10 +338,10 @@ class RepositoryTest extends TestCase
         $this->assertEquals(1, $countedUserNumber);
     }
 
-    protected function createUsers($userRepo, $number = 3)
+    protected function createUsers(UsersRepo $userRepo, $number = 3): ?array
     {
-        if ($number == 0) {
-            return;
+        if ($number <= 0) {
+            return null;
         }
 
         $users = [];
@@ -398,7 +398,7 @@ class Users extends \Phalcon\Mvc\Model
         return $this->username;
     }
 
-    public function setUsername($username)
+    public function setUsername(string $username)
     {
         $this->username = $username;
     }
