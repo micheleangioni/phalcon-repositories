@@ -13,7 +13,7 @@ PHP 7.1+ and Phalcon 3.2+ are required.
 
 ## Installation
 
-Phalcon Repositories can be installed through Composer, just include `"michele-angioni/phalcon-repositories": "~0.3"` to your composer.json and run `composer update` or `composer install`.
+Phalcon Repositories can be installed through Composer, just run `composer require michele-angioni/phalcon-repositories`.
 
 ## Usage with SQL Drivers
 
@@ -223,8 +223,9 @@ The `AbstractRepository` and `AbstractCollectionRepository` empower automaticall
 - `count()`
 - `countBy(array $where = [])`
 
-The `AbstractRepository` contains also the method:
+The `AbstractRepository` contains also the methods:
 
+- `getByGroupBy(string $groupBy, array $where = [], bool $addCounts = false)`
 - `truncate()`
 
 while the `AbstractCollectionRepository` allows for aggregations through:
