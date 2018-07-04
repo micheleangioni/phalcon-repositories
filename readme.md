@@ -32,7 +32,7 @@ namespace MyApp\Repos;
 use MicheleAngioni\PhalconRepositories\AbstractRepository;
 use MyApp\Models\Posts;
 
-class PostsRepository extends AbstractEloquentRepository
+class PostsRepository extends AbstractRepository
 {
     protected $model;
 
@@ -270,7 +270,7 @@ The following formats are supported:
 The `AbstractRepository` and `AbstractCollectionRepository` use bind parameters for all `$id` and `$where` clauses.
 `$inputs` parameters in create and update queries are automatically escaped by Phalcon.
 
-The security of the other parameters ($whereInKey, $whereIn = [], $orderBy, $order, $limit etc.) is up to you.
+The security of the other parameters (`$whereInKey`, `$whereIn`, `$orderBy`, `$order`, `$limit` etc.) is up to you.
 
 ## Testing
 
